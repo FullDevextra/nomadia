@@ -14,7 +14,117 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      contact_messages: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          message: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      job_applications: {
+        Row: {
+          address: string
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          last_name: string
+          phone: string
+          position: string
+        }
+        Insert: {
+          address: string
+          created_at?: string
+          email: string
+          first_name: string
+          id?: string
+          last_name: string
+          phone: string
+          position: string
+        }
+        Update: {
+          address?: string
+          created_at?: string
+          email?: string
+          first_name?: string
+          id?: string
+          last_name?: string
+          phone?: string
+          position?: string
+        }
+        Relationships: []
+      }
+      newsletter_subscriptions: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+        }
+        Relationships: []
+      }
+      trip_requests: {
+        Row: {
+          additional_notes: string | null
+          budget_range: string
+          created_at: string
+          destination: string
+          email: string
+          full_name: string
+          id: string
+          travel_dates: string
+          trip_type: string
+        }
+        Insert: {
+          additional_notes?: string | null
+          budget_range: string
+          created_at?: string
+          destination: string
+          email: string
+          full_name: string
+          id?: string
+          travel_dates: string
+          trip_type: string
+        }
+        Update: {
+          additional_notes?: string | null
+          budget_range?: string
+          created_at?: string
+          destination?: string
+          email?: string
+          full_name?: string
+          id?: string
+          travel_dates?: string
+          trip_type?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
