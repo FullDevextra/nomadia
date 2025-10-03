@@ -142,7 +142,7 @@ const Admin = () => {
         {/* Job Applications */}
         <section className="mb-12">
           <h3 className="text-2xl font-semibold mb-4">
-            Job Applications ({jobApplications.length})
+            Job Applications (First Link) ({jobApplications.length})
           </h3>
           <div className="grid gap-4">
             {filterRows(jobApplications).map((job) => (
@@ -177,7 +177,7 @@ const Admin = () => {
         {/* Applicant Profiles */}
         <section>
           <h3 className="text-2xl font-semibold mb-4">
-            Applicant Profiles ({applicantProfiles.length})
+            Applicant Profiles (Second Link) ({applicantProfiles.length})
           </h3>
           <div className="grid gap-4">
             {filterRows(applicantProfiles).map((p) => (
