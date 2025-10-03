@@ -66,10 +66,15 @@ const ProfileSetup = () => {
       let idCardUrl = null;
       let resumeUrl = null;
 
-      if (files.profilePic) profilePicUrl = await uploadFile(files.profilePic, "profile_pics");
-      if (files.idCard) idCardUrl = await uploadFile(files.idCard, "idcards");
-      if (files.resume) resumeUrl = await uploadFile(files.resume, "resumes");
+      // ✅ Upload each file if it exists
+      if (files.profilePic)
+        profilePicUrl = await uploadFile(files.profilePic, "profile_pics");
+      if (files.idCard)
+        idCardUrl = await uploadFile(files.idCard, "idcards");
+      if (files.resume)
+        resumeUrl = await uploadFile(files.resume, "resumes");
 
+      // ✅ Insert applicant data into Supabase
       const { error } = await supabase.from("applicant_profiles").insert([
         {
           first_name: formData.firstName,
@@ -94,8 +99,35 @@ const ProfileSetup = () => {
 
       if (error) throw error;
 
+      // ✅ Notify success
       toast.success("✅ Profile submitted successfully! You’ll be contacted soon.");
 
+      // 📨 Trigger Supabase Edge Function (Send Admin Email)
+      const emailResponse = await fetch(
+        "https://obiedxhlppfiipyynubm.supabase.co/functions/v1/send-admin-email",
+        {
+          method: "POST",
+          headers: {
+             "Content-Type": "application/json"
+           },
+          body: JSON.stringify({
+            applicant: {
+              first_name: formData.firstName,
+              last_name: formData.lastName,
+              email: formData.email,
+              phone: formData.phone,
+              id_card_url: idCardUrl,
+              resume_url: resumeUrl,
+            },
+          }),
+        }
+      );
+
+      if (!emailResponse.ok) {
+        console.warn("⚠️ Email notification failed:", await emailResponse.text());
+      }
+
+      // ✅ Reset form & files
       setFormData({
         firstName: "",
         lastName: "",
@@ -113,23 +145,25 @@ const ProfileSetup = () => {
         experience: "",
       });
       setFiles({ profilePic: null, idCard: null, resume: null });
-    } catch (err) {
-      console.error(err);
+
+    } catch (err: any) {
+      console.error("❌ Submission Error:", err);
       toast.error("❌ Failed to submit profile. Try again.");
     } finally {
       setLoading(false);
     }
   };
 
+
   return (
     <div className="min-h-screen">
-      <Navigation />
+      {/* <Navigation /> */}
 
       <Hero
         title="Complete Your Profile"
         subtitle="Fill out your details accurately. This information will be used to verify your identity and eligibility for roles at Nomadia Travel Co."
         backgroundImage={heroImage}
-        height="medium"
+        height="small"
       />
 
       <section className="py-16 bg-muted/30">
@@ -150,7 +184,7 @@ const ProfileSetup = () => {
                 <section>
                   <h3 className="font-semibold text-lg mb-4">Profile Picture</h3>
                   <div className="flex flex-col items-center gap-4">
-                    <Label htmlFor="profilePic">Upload a clear photo *</Label>
+                    <Label htmlFor="profilePic">Upload a clear photo (3MB max, jpeg, png, jpg format)*</Label>
                     <Input
                       id="profilePic"
                       type="file"
@@ -209,7 +243,7 @@ const ProfileSetup = () => {
                 <section>
                   <div className="text-sm text-muted-foreground">
                     By submitting this form, you agree to our{" "}
-                    <a href="#" className="underline text-primary">Terms and Conditions</a>.
+                    <a href="terms" className="underline text-primary">Terms and Conditions</a>.
                   </div>
                 </section>
 
