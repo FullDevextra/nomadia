@@ -11,6 +11,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import heroImage from "@/assets/jobs-hero.jpg";
+import { supabase } from "@/integrations/supabase/client";
+
+
+
 
 const Jobs = () => {
   const [formData, setFormData] = useState({
@@ -53,18 +57,47 @@ const Jobs = () => {
     },
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Your application has been received. Our team will contact you soon.");
-    setFormData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      address: "",
-      position: "",
-    });
+
+    try {
+      const { data, error } = await supabase
+        .from("job_applications")
+        .insert([
+          {
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+            email: formData.email,
+            phone: formData.phone,
+            address: formData.address,
+            position: formData.position,
+          },
+        ]);
+
+      if (error) {
+        console.error("Error inserting data:", error);
+        toast.error("Oops! Something went wrong. Please try again.");
+        return;
+      }
+
+      toast.success("✅ Your application has been received. Our team will contact you soon.");
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        address: "",
+        position: "",
+      });
+    } catch (err) {
+      console.error("Unexpected error:", err);
+      toast.error("Unexpected error occurred. Try again later.");
+    }
   };
+
+
+
+
 
   const handleChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));

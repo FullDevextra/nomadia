@@ -13,6 +13,8 @@ import FAQ from "./pages/FAQ";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import NotFound from "./pages/NotFound";
+import ProfileSetup from "@/pages/profile-setup";
+
 
 const queryClient = new QueryClient();
 
@@ -33,6 +35,7 @@ const App = () => (
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/profile-setup" element={<ProfileSetup />} /> {/* 👈 Register it */}
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
