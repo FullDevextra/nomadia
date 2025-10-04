@@ -16,7 +16,7 @@ const Terms = () => {
               <section>
                 <h2 className="font-heading font-semibold text-2xl text-foreground mb-4">1. Acceptance of Terms</h2>
                 <p>
-                  By accessing and using Nomadia Travel Co.'s services, you accept and agree to be bound by these Terms and Conditions. 
+                  By accessing and using GlobeExtra Travel Co.'s services, you accept and agree to be bound by these Terms and Conditions. 
                   If you do not agree with any part of these terms, please do not use our services.
                 </p>
               </section>
@@ -24,7 +24,7 @@ const Terms = () => {
               <section>
                 <h2 className="font-heading font-semibold text-2xl text-foreground mb-4">2. Services Provided</h2>
                 <p>
-                  Nomadia Travel Co. provides travel planning services, destination recommendations, and remote employment opportunities. 
+                  GlobeExtra Travel Co. provides travel planning services, destination recommendations, and remote employment opportunities. 
                   We act as an intermediary between travelers and service providers. We are not responsible for the actions, errors, 
                   omissions, representations, warranties, or breaches of third-party suppliers.
                 </p>
@@ -68,7 +68,7 @@ const Terms = () => {
               <section>
                 <h2 className="font-heading font-semibold text-2xl text-foreground mb-4">7. Remote Employment</h2>
                 <p>
-                  Employment opportunities advertised by Nomadia Travel Co. are subject to separate employment agreements. 
+                  Employment opportunities advertised by GlobeExtra Travel Co. are subject to separate employment agreements. 
                   Application does not guarantee employment. All positions are contingent upon successful completion of 
                   background checks and reference verifications as required by law.
                 </p>
@@ -77,7 +77,7 @@ const Terms = () => {
               <section>
                 <h2 className="font-heading font-semibold text-2xl text-foreground mb-4">8. Limitation of Liability</h2>
                 <p>
-                  Nomadia Travel Co. shall not be liable for any indirect, incidental, special, consequential, or punitive damages 
+                  GlobeExtra Travel Co. shall not be liable for any indirect, incidental, special, consequential, or punitive damages 
                   arising out of or relating to your use of our services. Our total liability shall not exceed the amount paid by 
                   you for the specific service in question.
                 </p>
@@ -96,7 +96,7 @@ const Terms = () => {
                 <p>
                   For questions about these Terms & Conditions, please contact us at:
                   <br />
-                  Email: info@nomadiatravel.co
+                  Email: info@GlobeExtratravel.co
                   <br />
                   Phone: +1 (630) 949-3644
                 </p>

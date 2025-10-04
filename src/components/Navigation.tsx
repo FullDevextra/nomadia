@@ -28,7 +28,7 @@ const Navigation = () => {
               <Plane className="w-6 h-6 text-primary-foreground" />
             </div>
             <div>
-              <div className="font-heading font-bold text-xl text-primary">Nomadia</div>
+              <div className="font-heading font-bold text-xl text-primary">GlobeExtra</div>
               <div className="text-xs text-muted-foreground -mt-1">Travel Co.</div>
             </div>
           </Link>

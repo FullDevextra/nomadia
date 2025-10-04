@@ -8,7 +8,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Homepage from "./pages/Homepage";
 import Destinations from "./pages/Destinations";
 import PlanTrip from "./pages/PlanTrip";
-import Jobs from "./pages/Jobs";
+// import Jobs from "./pages/Jobs";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
@@ -17,6 +17,10 @@ import Privacy from "./pages/Privacy";
 import NotFound from "./pages/NotFound";
 import ProfileSetup from "@/pages/profile-setup";
 import Admin from '@/pages/admin'
+
+import Jobs from "@/pages/Jobs";
+import JobDetail from "@/pages/Jobs/JobDetail";
+
 
 
 const queryClient = new QueryClient();
@@ -38,8 +42,9 @@ const App = () => (
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="*" element={<NotFound />} />
-          <Route path="/profile-setup" element={<ProfileSetup />} /> {/* 👈 Register it */}
-          <Route path="/admin" element={<Admin />} /> {/* 👈 Register it */}
+          <Route path="/profile-setup" element={<ProfileSetup />} /> 
+          <Route path="/admin" element={<Admin />} /> 
+          <Route path="/jobs/:slug" element={<JobDetail />} />
 
         </Routes>
       </BrowserRouter>

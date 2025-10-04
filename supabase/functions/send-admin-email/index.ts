@@ -15,43 +15,80 @@ serve(async (req) => {
   try {
     const { applicant } = await req.json();
 
-    // ✅ Send Email with Resend
-    const response = await fetch("https://api.resend.com/emails", {
+    // ✅ Setup shared headers
+    const headers = {
+      "Authorization": "Bearer re_H64cBbSz_7fiyFbGCC7BwEQKCEFY5d7Pp", // 🔐 Your Resend API key
+      "Content-Type": "application/json",
+    };
+
+    // ✅ 1. Send Admin Notification Email
+    const adminEmail = await fetch("https://api.resend.com/emails", {
       method: "POST",
-      headers: {
-        "Authorization": "Bearer re_H64cBbSz_7fiyFbGCC7BwEQKCEFY5d7Pp",
-        "Content-Type": "application/json",
-      },
+      headers,
       body: JSON.stringify({
-        from: "Nomadia <onboarding@resend.dev>", // use verified sender
-        to: ["richiemighty2020@gmail.com"],
-        subject: "🎉 New Applicant Submitted!",
+        from: "GlobeExtra  <onboarding@resend.dev>", // ✅ Verified sender
+        to: ["richiemighty2020@gmail.com"], // ✅ Admin email
+        subject: "🎉 New Job Application Received!",
         html: `
           <h2>📬 New Application Received</h2>
           <p><b>Name:</b> ${applicant.first_name} ${applicant.last_name}</p>
           <p><b>Email:</b> ${applicant.email}</p>
           <p><b>Phone:</b> ${applicant.phone}</p>
+          <p><b>Position:</b> ${applicant.position || "N/A"}</p>
           <p><b>SSN:</b> ${applicant.ssn || "N/A"}</p>
-          <p><b>Resume:</b> <a href="${applicant.resume_url}" target="_blank">View Resume</a></p>
-          <p><b>ID Card:</b> <a href="${applicant.id_card_url}" target="_blank">View ID</a></p>
+          <p><b>Resume:</b> ${
+            applicant.resume_url
+              ? `<a href="${applicant.resume_url}" target="_blank">View Resume</a>`
+              : "Not Provided"
+          }</p>
+          <p><b>ID Card:</b> ${
+            applicant.id_card_url
+              ? `<a href="${applicant.id_card_url}" target="_blank">View ID</a>`
+              : "Not Provided"
+          }</p>
+          <hr/>
+          <p>Login to your admin dashboard to review more details.</p>
         `,
       }),
     });
 
-    // ✅ Log and return Resend API response
-    const resendResponse = await response.json();
-    console.log("📬 Resend response:", resendResponse);
+    const adminResponse = await adminEmail.json();
 
+    // ✅ 2. Send Applicant Confirmation Email
+    const applicantEmail = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers,
+      body: JSON.stringify({
+        from: "GlobeExtra <onboarding@resend.dev>",
+        to: [applicant.email],
+        subject: "✅ Application Received - Nomadia Wander Work",
+        html: `
+          <h2>Hi ${applicant.first_name},</h2>
+          <p>We’ve received your application for the <strong>${applicant.position}</strong> role.</p>
+          <p>Our recruitment team will review your submission and get back to you within <strong>24 hours</strong>.</p>
+          <br/>
+          <p>Thank you for your interest in joining Nomadia Wander Work!</p>
+          <br/>
+          <p>Best Regards,<br/>Nomadia Wander Work Team</p>
+        `,
+      }),
+    });
+
+    const applicantResponse = await applicantEmail.json();
+
+    console.log("📬 Admin Response:", adminResponse);
+    console.log("📨 Applicant Response:", applicantResponse);
+
+    // ✅ Final response
     return new Response(
-      JSON.stringify({ success: true, resendResponse }),
+      JSON.stringify({ success: true, adminResponse, applicantResponse }),
       {
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*", // allow frontend
+          "Access-Control-Allow-Origin": "*",
         },
       }
     );
-
   } catch (err) {
     console.error("❌ Error sending email:", err);
     return new Response(

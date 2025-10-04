@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
-import heroImage from "@/assets/jobs-hero.jpg";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import heroImage from "@/assets/jobs-hero.jpg";
 
 const Jobs = () => {
   const jobs = [
@@ -47,9 +47,11 @@ const Jobs = () => {
   ];
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col">
+      {/* ✅ Navigation */}
       <Navigation />
 
+      {/* ✅ Hero Section */}
       <Hero
         title="Work From Anywhere. Grow With Us."
         subtitle="Explore flexible roles at GlobeExtra Travel Co. We welcome passionate individuals who love travel, creativity, and remote collaboration."
@@ -57,27 +59,32 @@ const Jobs = () => {
         height="medium"
       />
 
-      <section className="py-16">
+      {/* ✅ Job Listings */}
+      <section className="py-16 flex-1">
         <div className="container mx-auto px-4">
           <h2 className="font-heading font-bold text-3xl md:text-4xl text-center mb-12">
             Open Positions
           </h2>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
             {jobs.map((job) => (
               <Card
                 key={job.slug}
-                className="p-6 flex flex-col justify-between shadow-md hover:shadow-lg transition"
+                className="p-6 flex flex-col justify-between shadow-md hover:shadow-xl transition-shadow duration-300"
               >
                 <div>
                   <h3 className="text-xl font-semibold">{job.title}</h3>
                   <p className="mt-2 text-sm text-muted-foreground">{job.description}</p>
-                  <p className="mt-2 font-medium">
+                  <p className="mt-3 font-medium text-primary">
                     {job.rate} • {job.location}
                   </p>
                 </div>
-                <div className="mt-4">
+
+                <div className="mt-6">
                   <Link to={`/jobs/${job.slug}`}>
-                    <Button className="w-full">View & Apply</Button>
+                    <Button className="w-full bg-primary hover:bg-secondary text-primary-foreground">
+                      View & Apply
+                    </Button>
                   </Link>
                 </div>
               </Card>
@@ -86,6 +93,7 @@ const Jobs = () => {
         </div>
       </section>
 
+      {/* ✅ Footer */}
       <Footer />
     </div>
   );

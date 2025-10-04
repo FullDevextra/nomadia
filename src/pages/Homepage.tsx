@@ -104,9 +104,9 @@ const Homepage = () => {
       <section className="py-16 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="font-heading font-bold text-3xl md:text-4xl mb-6">About Nomadia Travel Co.</h2>
+            <h2 className="font-heading font-bold text-3xl md:text-4xl mb-6">About GlobeExtra Travel Co.</h2>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              At Nomadia Travel Co., we believe that travel is more than movement — it's meaning. We design personalized 
+              At GlobeExtra Travel Co., we believe that travel is more than movement — it's meaning. We design personalized 
               journeys that reflect each traveler's lifestyle, curiosity, and pace. Whether you're planning your dream trip 
               or exploring flexible remote work, we help you discover a world of opportunity.
             </p>

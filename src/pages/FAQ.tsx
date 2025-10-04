@@ -7,7 +7,7 @@ import heroImage from "@/assets/faq-hero.jpg";
 const FAQ = () => {
   const faqs = [
     {
-      question: "How do I book a trip with Nomadia Travel Co.?",
+      question: "How do I book a trip with GlobeExtra Travel Co.?",
       answer: "Simply fill out our trip planning form with your destination preferences, travel dates, and budget. Our travel experts will contact you within 24 hours to discuss your personalized itinerary and finalize booking details.",
     },
     {
@@ -46,7 +46,7 @@ const FAQ = () => {
 
       <Hero
         title="Frequently Asked Questions"
-        subtitle="Everything you need to know about traveling with Nomadia"
+        subtitle="Everything you need to know about traveling with GlobeExtra"
         backgroundImage={heroImage}
         height="small"
       />

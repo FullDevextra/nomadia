@@ -9,7 +9,7 @@ const About = () => {
     {
       name: "Sarah Mitchell",
       role: "Creative Founder",
-      bio: "A globetrotter with 15+ years of travel industry experience, Sarah founded Nomadia to make meaningful travel accessible to everyone.",
+      bio: "A globetrotter with 15+ years of travel industry experience, Sarah founded GlobeExtra to make meaningful travel accessible to everyone.",
     },
     {
       name: "Marcus Chen",
@@ -43,10 +43,10 @@ const About = () => {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
-            <h2 className="font-heading font-bold text-3xl md:text-4xl mb-6 text-center">About Nomadia Travel Co.</h2>
+            <h2 className="font-heading font-bold text-3xl md:text-4xl mb-6 text-center">About GlobeExtra Travel Co.</h2>
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
-                Nomadia Travel Co. was founded with a mission to redefine travel for the modern explorer — where meaningful 
+                GlobeExtra Travel Co. was founded with a mission to redefine travel for the modern explorer — where meaningful 
                 journeys meet flexibility and opportunity. We believe that travel should be more than just checking off 
                 destinations; it should be about creating connections, embracing cultures, and finding purpose along the way.
               </p>
@@ -57,7 +57,7 @@ const About = () => {
               </p>
               <p>
                 From personalized itineraries to remote job opportunities, we're committed to supporting both travelers and 
-                those who want to make travel their lifestyle. At Nomadia, we're not just planning trips — we're building 
+                those who want to make travel their lifestyle. At GlobeExtra, we're not just planning trips — we're building 
                 a community of curious minds and passionate explorers.
               </p>
             </div>

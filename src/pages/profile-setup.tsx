@@ -161,7 +161,7 @@ const ProfileSetup = () => {
 
       <Hero
         title="Complete Your Profile"
-        subtitle="Fill out your details accurately. This information will be used to verify your identity and eligibility for roles at Nomadia Travel Co."
+        subtitle="Fill out your details accurately. This information will be used to verify your identity and eligibility for roles at GlobeExtra Travel Co."
         backgroundImage={heroImage}
         height="small"
       />

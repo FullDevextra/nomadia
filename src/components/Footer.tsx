@@ -13,7 +13,7 @@ const Footer = () => {
                 <Plane className="w-5 h-5 text-accent-foreground" />
               </div>
               <div>
-                <div className="font-heading font-bold text-lg">Nomadia</div>
+                <div className="font-heading font-bold text-lg">GlobeExtra</div>
                 <div className="text-xs opacity-80">Travel Co.</div>
               </div>
             </div>
@@ -85,8 +85,8 @@ const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-center gap-2 text-sm">
                 <Mail className="w-4 h-4 opacity-75" />
-                <a href="mailto:info@nomadiatravel.co" className="opacity-90 hover:opacity-100 hover:underline transition-opacity">
-                  info@nomadiatravel.co
+                <a href="mailto:info@GlobeExtratravel.co" className="opacity-90 hover:opacity-100 hover:underline transition-opacity">
+                  info@GlobeExtratravel.co
                 </a>
               </li>
               <li className="flex items-center gap-2 text-sm">
@@ -112,7 +112,7 @@ const Footer = () => {
 
         <div className="border-t border-primary-foreground/20 mt-8 pt-8 text-center">
           <p className="text-sm opacity-75">
-            © 2025 Nomadia Travel Co. All Rights Reserved.
+            © 2025 GlobeExtra Travel Co. All Rights Reserved.
           </p>
         </div>
       </div>

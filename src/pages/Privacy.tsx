@@ -114,7 +114,7 @@ const Privacy = () => {
                 <p>
                   If you have questions about this Privacy Policy or our data practices, please contact us at:
                   <br />
-                  Email: info@nomadiatravel.co
+                  Email: info@GlobeExtratravel.co
                   <br />
                   Phone: +1 (630) 949-3644
                 </p>

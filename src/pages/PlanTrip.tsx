@@ -24,7 +24,7 @@ const PlanTrip = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Thanks! A Nomadia travel expert will reach out shortly.");
+    toast.success("Thanks! A GlobeExtra travel expert will reach out shortly.");
     setFormData({
       fullName: "",
       email: "",
