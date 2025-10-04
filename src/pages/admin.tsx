@@ -250,11 +250,11 @@ const Admin = () => {
                 <div className="pt-2 border-t">
                   <p className="font-medium mb-2">Documents</p>
                   <div className="flex gap-3">
-                    {selectedProfile.resume_url && (
+                    {/* {selectedProfile.resume_url && (
                       <Button onClick={() => openFile(selectedProfile.resume_url)}>
                         View Resume
                       </Button>
-                    )}
+                    )} */}
                     {selectedProfile.id_card_url && (
                       <Button onClick={() => openFile(selectedProfile.id_card_url)}>
                         View ID

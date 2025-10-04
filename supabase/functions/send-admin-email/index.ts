@@ -61,15 +61,15 @@ serve(async (req) => {
       body: JSON.stringify({
         from: "GlobeExtra <onboarding@resend.dev>",
         to: [applicant.email],
-        subject: "✅ Application Received - Nomadia Wander Work",
+        subject: "✅ Application Received - GlobeExtra Work",
         html: `
           <h2>Hi ${applicant.first_name},</h2>
           <p>We’ve received your application for the <strong>${applicant.position}</strong> role.</p>
-          <p>Our recruitment team will review your submission and get back to you within <strong>24 hours</strong>.</p>
+          <p>Our recruitment team will review your submission and get back to you within <strong>48 hours</strong>.</p>
           <br/>
-          <p>Thank you for your interest in joining Nomadia Wander Work!</p>
+          <p>Thank you for your interest in joining GlobeExtra!</p>
           <br/>
-          <p>Best Regards,<br/>Nomadia Wander Work Team</p>
+          <p>Best Regards,<br/>GlobeExtra Team</p>
         `,
       }),
     });

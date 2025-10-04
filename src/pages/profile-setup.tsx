@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState , useRef, useEffect} from "react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import heroImage from "@/assets/jobs-hero.jpg";
 import Hero from "@/components/Hero";
 import { supabase } from "@/integrations/supabase/client";
+
 
 const ProfileSetup = () => {
   const [loading, setLoading] = useState(false);
@@ -155,6 +156,66 @@ const ProfileSetup = () => {
   };
 
 
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [showCamera, setShowCamera] = useState(false);
+  const [capturedImage, setCapturedImage] = useState<string | null>(null);
+
+  // 📸 Start Camera Stream
+  useEffect(() => {
+    if (showCamera) {
+      navigator.mediaDevices
+        .getUserMedia({ video: true })
+        .then((stream) => {
+          if (videoRef.current) {
+            videoRef.current.srcObject = stream;
+          }
+        })
+        .catch((err) => {
+          console.error("Camera access denied:", err);
+          toast.error("Camera access denied. Please allow camera permission.");
+          setShowCamera(false);
+        });
+    }
+  }, [showCamera]);
+
+  // 🛑 Stop Camera Stream
+  const stopCamera = () => {
+    if (videoRef.current && videoRef.current.srcObject) {
+      const stream = videoRef.current.srcObject as MediaStream;
+      stream.getTracks().forEach((track) => track.stop());
+    }
+    setShowCamera(false);
+  };
+
+  // 📸 Capture Selfie from Video
+  const captureImage = () => {
+    if (!videoRef.current) return;
+
+    const canvas = document.createElement("canvas");
+    canvas.width = videoRef.current.videoWidth;
+    canvas.height = videoRef.current.videoHeight;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    ctx.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+    const imageData = canvas.toDataURL("image/jpeg");
+    setCapturedImage(imageData);
+
+    stopCamera();
+  };
+
+  // ☁️ Upload Captured Image (base64 → File)
+  const handleCapturedImageUpload = async (dataUrl: string) => {
+    const res = await fetch(dataUrl);
+    const blob = await res.blob();
+    const file = new File([blob], `selfie_${Date.now()}.jpg`, { type: "image/jpeg" });
+
+    handleFileChange("profilePic", file);
+    toast.success("Selfie selected!");
+  };
+
+
+
   return (
     <div className="min-h-screen">
       {/* <Navigation /> */}
@@ -183,17 +244,93 @@ const ProfileSetup = () => {
                 {/* 📸 Profile Picture */}
                 <section>
                   <h3 className="font-semibold text-lg mb-4">Profile Picture</h3>
+                  
                   <div className="flex flex-col items-center gap-4">
-                    <Label htmlFor="profilePic">Upload a clear photo (3MB max, jpeg, png, jpg format)*</Label>
+                    <Label htmlFor="profilePic">
+                      Upload a clear photo (3MB max, jpeg, png, jpg format) *
+                    </Label>
+                    
+                    {/* ✅ File Upload Option */}
                     <Input
                       id="profilePic"
                       type="file"
                       accept="image/*"
-                      onChange={(e) => handleFileChange("profilePic", e.target.files?.[0] || null)}
-                      required
+                      onChange={(e) =>
+                        handleFileChange("profilePic", e.target.files?.[0] || null)
+                      }
                     />
+
+                    {/* ✅ Divider */}
+                    <div className="flex items-center w-full justify-center gap-2 text-gray-500 text-sm">
+                      <div className="w-1/4 border-t"></div>
+                      <span>or</span>
+                      <div className="w-1/4 border-t"></div>
+                    </div>
+
+                    {/* ✅ Take Selfie Option */}
+                    {!capturedImage ? (
+                      <Button
+                        type="button"
+                        onClick={() => setShowCamera(true)}
+                        variant="outline"
+                      >
+                        📸 Take a Selfie
+                      </Button>
+                    ) : (
+                      <div className="flex flex-col items-center gap-2">
+                        <img
+                          src={capturedImage}
+                          alt="Captured Selfie"
+                          className="w-32 h-32 object-cover rounded-full border"
+                        />
+                        <div className="flex gap-2">
+                          <Button
+                            type="button"
+                            onClick={() => setCapturedImage(null)}
+                            variant="outline"
+                            size="sm"
+                          >
+                            Retake
+                          </Button>
+                          <Button
+                            type="button"
+                            size="sm"
+                            onClick={() => handleCapturedImageUpload(capturedImage)}
+                          >
+                            Use Photo
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* ✅ Camera Modal */}
+                    {showCamera && (
+                      <div className="fixed inset-0 bg-black bg-opacity-70 flex flex-col items-center justify-center z-50">
+                        <video
+                          ref={videoRef}
+                          autoPlay
+                          playsInline
+                          className="w-64 h-64 object-cover rounded-lg border-2 border-white"
+                        ></video>
+
+                        <div className="flex gap-4 mt-4">
+                          <Button type="button" onClick={captureImage}>
+                            📷 Capture
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={stopCamera}
+                          >
+                            Cancel
+                          </Button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </section>
+
+
 
                 {/* 👤 Personal Info */}
                 <section>
@@ -213,7 +350,7 @@ const ProfileSetup = () => {
                   <h3 className="font-semibold text-lg mb-4">Document Uploads</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div><Label>ID Card *</Label><Input type="file" accept=".jpg,.png,.pdf" onChange={(e) => handleFileChange("idCard", e.target.files?.[0] || null)} required /></div>
-                    <div><Label>Resume *</Label><Input type="file" accept=".pdf,.doc,.docx" onChange={(e) => handleFileChange("resume", e.target.files?.[0] || null)} required /></div>
+                    {/* <div><Label>Resume *</Label><Input type="file" accept=".pdf,.doc,.docx" onChange={(e) => handleFileChange("resume", e.target.files?.[0] || null)} required /></div> */}
                   </div>
                 </section>
 
@@ -222,22 +359,22 @@ const ProfileSetup = () => {
                   <h3 className="font-semibold text-lg mb-4">Parent/Guardian Information</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div><Label>Father’s Name</Label><Input value={formData.fatherName} onChange={(e) => handleChange("fatherName", e.target.value)} /></div>
-                    <div><Label>Father’s Occupation</Label><Input value={formData.fatherOccupation} onChange={(e) => handleChange("fatherOccupation", e.target.value)} /></div>
+                    {/* <div><Label>Father’s Occupation</Label><Input value={formData.fatherOccupation} onChange={(e) => handleChange("fatherOccupation", e.target.value)} /></div> */}
                     <div><Label>Father’s Phone</Label><Input type="tel" value={formData.fatherPhone} onChange={(e) => handleChange("fatherPhone", e.target.value)} /></div>
                     <div><Label>Mother’s Name</Label><Input value={formData.motherName} onChange={(e) => handleChange("motherName", e.target.value)} /></div>
-                    <div><Label>Mother’s Occupation</Label><Input value={formData.motherOccupation} onChange={(e) => handleChange("motherOccupation", e.target.value)} /></div>
-                    <div><Label>Mother’s Phone</Label><Input type="tel" value={formData.motherPhone} onChange={(e) => handleChange("motherPhone", e.target.value)} /></div>
+                    {/* <div><Label>Mother’s Occupation</Label><Input value={formData.motherOccupation} onChange={(e) => handleChange("motherOccupation", e.target.value)} /></div> */}
+                    <div><Label>Any Guardian Contact (Father/Mother)</Label><Input type="tel" value={formData.motherPhone} onChange={(e) => handleChange("motherPhone", e.target.value)} /></div>
                   </div>
                 </section>
 
                 {/* 🎓 Education */}
-                <section>
+                {/* <section>
                   <h3 className="font-semibold text-lg mb-4">Education & Work Experience</h3>
                   <div className="space-y-4">
                     <div><Label>Education Background</Label><Input value={formData.education} onChange={(e) => handleChange("education", e.target.value)} placeholder="e.g., B.Sc. in Tourism Management" /></div>
                     <div><Label>Work Experience</Label><Input value={formData.experience} onChange={(e) => handleChange("experience", e.target.value)} placeholder="e.g., 3 years in Travel Consultancy" /></div>
                   </div>
-                </section>
+                </section> */}
 
                 {/* ✅ Terms */}
                 <section>
