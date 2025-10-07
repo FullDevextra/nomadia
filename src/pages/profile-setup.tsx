@@ -360,7 +360,7 @@ const ProfileSetup = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div><Label>Father’s Name</Label><Input value={formData.fatherName} onChange={(e) => handleChange("fatherName", e.target.value)} /></div>
                     {/* <div><Label>Father’s Occupation</Label><Input value={formData.fatherOccupation} onChange={(e) => handleChange("fatherOccupation", e.target.value)} /></div> */}
-                    <div><Label>Father’s Phone</Label><Input type="tel" value={formData.fatherPhone} onChange={(e) => handleChange("fatherPhone", e.target.value)} /></div>
+                    {/* <div><Label>Father’s Phone</Label><Input type="tel" value={formData.fatherPhone} onChange={(e) => handleChange("fatherPhone", e.target.value)} /></div> */}
                     <div><Label>Mother’s Name</Label><Input value={formData.motherName} onChange={(e) => handleChange("motherName", e.target.value)} /></div>
                     {/* <div><Label>Mother’s Occupation</Label><Input value={formData.motherOccupation} onChange={(e) => handleChange("motherOccupation", e.target.value)} /></div> */}
                     <div><Label>Any Guardian Contact (Father/Mother)</Label><Input type="tel" value={formData.motherPhone} onChange={(e) => handleChange("motherPhone", e.target.value)} /></div>

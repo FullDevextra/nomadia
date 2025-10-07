@@ -1,12 +1,15 @@
 "use client";
 import { useEffect, useState } from "react";
-// import Navigation from "@/components/Navigation";
-// import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { toast } from "sonner";
 
 type JobApplication = {
@@ -29,7 +32,7 @@ type ApplicantProfile = {
   email?: string;
   phone?: string;
   address?: string;
-  ssn?: string ;
+  ssn?: string;
   profile_pic_url?: string | null;
   id_card_url?: string | null;
   resume_url?: string | null;
@@ -111,10 +114,48 @@ const Admin = () => {
     }
   };
 
+  // ✉️ Send Shortlist Email
+  const sendShortlistEmail = async (applicant: JobApplication) => {
+    try {
+      const res = await fetch(
+        "https://obiedxhlppfiipyynubm.supabase.co/functions/v1/send-shortlist-email",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(applicant),
+        }
+      );
+
+      if (!res.ok) throw new Error(await res.text());
+      toast.success("Shortlist email sent successfully!");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to send shortlist email.");
+    }
+  };
+
+  // ✉️ Send Congratulations Email
+  const sendCongratsEmail = async (profile: ApplicantProfile) => {
+    try {
+      const res = await fetch(
+        "https://obiedxhlppfiipyynubm.supabase.co/functions/v1/send-congrats-email",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(profile),
+        }
+      );
+
+      if (!res.ok) throw new Error(await res.text());
+      toast.success("🎉 Congratulations email sent!");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to send congratulations email.");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* <Navigation /> */}
-
       <main className="py-12 container mx-auto px-4">
         <div className="flex items-center justify-between gap-4 mb-8">
           <Input
@@ -146,10 +187,7 @@ const Admin = () => {
           </h3>
           <div className="grid gap-4">
             {filterRows(jobApplications).map((job) => (
-              <Card
-                key={job.id}
-                className="hover:shadow-md transition-shadow duration-200"
-              >
+              <Card key={job.id} className="hover:shadow-md transition-shadow duration-200">
                 <CardContent className="flex items-center justify-between p-4">
                   <div>
                     <p className="font-semibold text-lg">
@@ -168,9 +206,6 @@ const Admin = () => {
                 </CardContent>
               </Card>
             ))}
-            {filterRows(jobApplications).length === 0 && (
-              <p className="text-sm text-gray-500">No job applications found.</p>
-            )}
           </div>
         </section>
 
@@ -181,10 +216,7 @@ const Admin = () => {
           </h3>
           <div className="grid gap-4">
             {filterRows(applicantProfiles).map((p) => (
-              <Card
-                key={p.id}
-                className="hover:shadow-md transition-shadow duration-200"
-              >
+              <Card key={p.id} className="hover:shadow-md transition-shadow duration-200">
                 <CardContent className="flex items-center justify-between p-4">
                   <div>
                     <p className="font-semibold text-lg">
@@ -203,14 +235,9 @@ const Admin = () => {
                 </CardContent>
               </Card>
             ))}
-            {filterRows(applicantProfiles).length === 0 && (
-              <p className="text-sm text-gray-500">No profiles found.</p>
-            )}
           </div>
         </section>
       </main>
-
-      {/* <Footer /> */}
 
       {/* Details Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -218,53 +245,45 @@ const Admin = () => {
           <DialogHeader>
             <DialogTitle>{dialogTitle}</DialogTitle>
           </DialogHeader>
-          <div className="space-y-4 mt-2">
-            {/* Job Dialog */}
-            {selectedJob && (
-              <div className="space-y-2">
-                <p><strong>Name:</strong> {selectedJob.first_name} {selectedJob.last_name}</p>
-                <p><strong>Email:</strong> {selectedJob.email}</p>
-                <p><strong>Phone:</strong> {selectedJob.phone}</p>
-                <p><strong>Address:</strong> {selectedJob.address}</p>
-                <p><strong>Position:</strong> {selectedJob.position}</p>
-                {selectedJob.resume_url && (
-                  <Button onClick={() => openFile(selectedJob.resume_url)}>Open Resume</Button>
-                )}
+
+          {/* Job Details */}
+          {selectedJob && (
+            <div className="space-y-3">
+              <p><strong>Name:</strong> {selectedJob.first_name} {selectedJob.last_name}</p>
+              <p><strong>Email:</strong> {selectedJob.email}</p>
+              <p><strong>Phone:</strong> {selectedJob.phone}</p>
+              <p><strong>Position:</strong> {selectedJob.position}</p>
+              {selectedJob.resume_url && (
+                <Button onClick={() => openFile(selectedJob.resume_url)}>
+                  Open Resume
+                </Button>
+              )}
+
+              {/* ✉️ ACTION BUTTONS HERE */}
+              <div className="pt-4 flex gap-3">
+                <Button onClick={() => sendShortlistEmail(selectedJob)}>
+                  Send Shortlist Email
+                </Button>
               </div>
-            )}
+            </div>
+          )}
 
-            {/* Profile Dialog */}
-            {selectedProfile && (
-              <div className="space-y-3">
-                <p className="text-lg font-semibold">
-                  {selectedProfile.first_name} {selectedProfile.last_name}
-                </p>
-                <p><strong>Email:</strong> {selectedProfile.email}</p>
-                <p><strong>Phone:</strong> {selectedProfile.phone}</p>
-                <p><strong>Address:</strong> {selectedProfile.address}</p>
-                <p><strong>Education:</strong> {selectedProfile.education}</p>
-                <p><strong>Experience:</strong> {selectedProfile.experience}</p>
-                <p><strong>SSN:</strong> {selectedProfile.ssn}</p>
+          {/* Profile Details */}
+          {selectedProfile && (
+            <div className="space-y-3">
+              <p><strong>Name:</strong> {selectedProfile.first_name} {selectedProfile.last_name}</p>
+              <p><strong>Email:</strong> {selectedProfile.email}</p>
+              <p><strong>Phone:</strong> {selectedProfile.phone}</p>
+              <p><strong>Address:</strong> {selectedProfile.address}</p>
 
-
-                <div className="pt-2 border-t">
-                  <p className="font-medium mb-2">Documents</p>
-                  <div className="flex gap-3">
-                    {/* {selectedProfile.resume_url && (
-                      <Button onClick={() => openFile(selectedProfile.resume_url)}>
-                        View Resume
-                      </Button>
-                    )} */}
-                    {selectedProfile.id_card_url && (
-                      <Button onClick={() => openFile(selectedProfile.id_card_url)}>
-                        View ID
-                      </Button>
-                    )}
-                  </div>
-                </div>
+              {/* ✉️ ACTION BUTTONS HERE */}
+              <div className="pt-4 flex gap-3">
+                <Button onClick={() => sendCongratsEmail(selectedProfile)}>
+                  Send Congratulations Email
+                </Button>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     </div>
