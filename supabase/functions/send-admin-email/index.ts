@@ -26,8 +26,9 @@ serve(async (req) => {
       method: "POST",
       headers,
       body: JSON.stringify({
-        from: "GlobeExtra  <onboarding@resend.dev>", // ✅ Verified sender
-        to: ["richiemighty2020@gmail.com"], // ✅ Admin email
+        from: "GlobeExtra Recruitment <recruitment@globeextra.com>",
+        // from: "GlobeExtra  <onboarding@resend.dev>", ✅ Verified sender
+        to: ["ml1357665@gmail.com"], // ✅ Admin email
         subject: "🎉 New Job Application Received!",
         html: `
           <h2>📬 New Application Received</h2>
@@ -59,7 +60,7 @@ serve(async (req) => {
       method: "POST",
       headers,
       body: JSON.stringify({
-        from: "GlobeExtra <onboarding@resend.dev>",
+        from: "GlobeExtra Recruitment <recruitment@globeextra.com>",
         to: [applicant.email],
         subject: "✅ Application Received - GlobeExtra Work",
         html: `
